@@ -5,7 +5,7 @@
   <?= $this->Html->link('Add New', ['action'=>'add'], ['class'=>['pull-right', 'fs12']]); ?>
   Blog Posts
 </h1>
-
+<!-- <?php var_dump($this); ?> -->
 <ul>
   <?php foreach ($posts as $post): ?>
     <li>
