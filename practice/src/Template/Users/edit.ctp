@@ -1,7 +1,7 @@
 <?php $this->assign('title', 'edit User'); ?>
 
 <?= $this->Form->create($user); ?>
-<?= $this->Form->input('name'); ?>
+<?= $this->Form->input('username'); ?>
 <?= $this->Form->input('email'); ?>
 <?= $this->Form->input('password'); ?>
 <?= $this->Form->input('college'); ?>

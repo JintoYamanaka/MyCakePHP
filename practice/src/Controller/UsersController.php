@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
 
 class UsersController extends AppController
 {
@@ -34,8 +35,8 @@ class UsersController extends AppController
             $data = $this->request->getData();
             if ($this->Users->save($user)) {
                 // $this->Flash->success(__('The user has been saved.'));
-                if($user->name != NULL) $this->Flash->success('The user has been saved.');
-                if($user->name == NULL) $this->Flash->success('name null');
+                if($user->username != NULL) $this->Flash->success('The user has been saved.');
+                if($user->username == NULL) $this->Flash->success('username null');
 
                 // return $this->redirect(['action' => 'index']);
             } else {
@@ -75,5 +76,33 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        // ユーザーの登録とログアウトを許可します。
+        // allow のリストに "login" アクションを追加しないでください。
+        // そうすると AuthComponent の正常な機能に問題が発生します。
+        $this->Auth->allow(['add', 'logout']);
+    }
+
+    public function login()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                $this->Flash->success('You are now logged in.');
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error(__('Invalid username or password, try again'));
+        }
+    }
+
+    public function logout()
+    {
+        $this->Flash->success('You are now logged out.');
+        return $this->redirect($this->Auth->logout());
     }
 }
